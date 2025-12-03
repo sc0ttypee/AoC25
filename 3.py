@@ -11,38 +11,58 @@ if __name__ == "__main__":
     result_1, result_2 = 0, 0
 
     for line in input_data:
-        highest_left = -1
-        index_01 = -1
-        highest_right = -1
-        index_02 = -1
-        highest = 9
         int_list = [int(x) for x in line]
-        while(highest > 0 and highest_left == -1):
+        int_list.reverse()
+        lowest = 1
+        while (int_list.__len__() > 12):
             try:
-                index_01 = int_list.index(highest)
-                highest_left = int_list.pop(index_01)
+                int_list.pop(int_list.index(lowest))
             except:
-                highest -= 1
+                lowest +=1
                 continue
-        if (index_01 == int_list.__len__() -1):
-            highest_right = highest_left
-            highest_left = -1
-            while(highest > 0 and highest_left == -1):
-                try:
-                    index_01 = int_list.index(highest)
-                    highest_left = int_list.pop(index_01)
-                except:
-                    highest -= 1
-                    continue
+
+        int_list.reverse()
+        counter = 11
+        res = 0
+        for x in int_list:
+            res += x * 10 ** counter
+            counter -= 1
+        print(res)
+        result_2 += res
+    print(result_2)
+
+def part_1(input_data):
+    for line in input_data:
+        int_list = [int(x) for x in line]
+        last = int_list[-1]
+        rest = int_list[:-1]
+        highest_left = -1
+        highest_right = -1
+        max_val = 9
+        while (max_val > 0 and highest_left == -1):
+            try:
+                idx = rest.index(max_val)
+                highest_left = rest[idx]
+                print(f"highest left: {highest_left}")
+                rest = rest[idx + 1:]
+            except:
+                max_val -= 1
+                continue
+        max_val = 9
+        while (max_val > 0 and highest_right == -1):
+            try:
+                idx = rest.index(max_val)
+                highest_right = rest[idx]
+                print(f"highest right: {highest_right}")
+            except:
+                max_val -= 1
+                continue
+        if (highest_right < last):
+            result_1 += highest_left * 10 + last
+            print(highest_left * 10 + last)
         else:
-            highest = 9
-            while(highest > 0 and highest_right == -1):
-                try:
-                    index_02 = int_list.index(highest)
-                    highest_right = int_list.pop(index_02)
-                except:
-                    highest -= 1
-                    continue
-        print(f"{highest_left}{highest_right}")
+            result_1 += highest_left * 10 + highest_right
+            print(highest_left * 10 + highest_right)
+
 
     print(f"Part 1: {result_1}\nPart 2: {result_2}\nSolved in {round((time.time() - start_time) * 1000, 2)} ms", flush=True)
